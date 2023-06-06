@@ -14,7 +14,9 @@ app.use(cors()); // Configure CORS here
 
 const server = http.createServer(app);
 
-nodeCron.schedule("*/10 * * * *", () => {});
+nodeCron.schedule("*/10 * * * *", () => {
+    console.log('wake up!!');
+});
 
 const io = socketio(server, {
     cors: {
@@ -27,7 +29,7 @@ io.on('connection', (socket) => {
   socket.on('join' , ({name , room} , callback)=>{
     const data = addUser({id:socket.id , name:name , room:room});
     
-    console.log(`${data.user.name} joined`);
+    console.log(`${data.user.name} joined ${data.user.room}`);
     const user = data.user;
     const error = data.error;
 
@@ -56,7 +58,7 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect' , () =>{
     const user = deleteUser(socket.id);
-    console.log(`${user.name} left`);
+    console.log(`${user.name} left ${data.user.room}`);
 
     if(user){
       io.to(user.room).emit('message' , {user : 'admin' , text: `${user.name} has left.`});
