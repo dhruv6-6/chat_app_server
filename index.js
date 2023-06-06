@@ -23,6 +23,7 @@ io.on('connection', (socket) => {
   socket.on('join' , ({name , room} , callback)=>{
     const data = addUser({id:socket.id , name:name , room:room});
     
+    console.log(`${data.user.name} joined`);
     const user = data.user;
     const error = data.error;
 
@@ -51,6 +52,8 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect' , () =>{
     const user = deleteUser(socket.id);
+    console.log(`${user.name} left`);
+
     if(user){
       io.to(user.room).emit('message' , {user : 'admin' , text: `${user.name} has left.`});
     }
