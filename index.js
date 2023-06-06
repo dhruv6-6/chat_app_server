@@ -14,9 +14,7 @@ app.use(cors()); // Configure CORS here
 
 const server = http.createServer(app);
 
-nodeCron.schedule("*/10 * * * *", () => {
-  console.log("lol");
-});
+nodeCron.schedule("*/10 * * * *", () => {});
 
 const io = socketio(server, {
     cors: {
