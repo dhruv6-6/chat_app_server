@@ -2,6 +2,7 @@ const express = require('express');
 const socketio = require('socket.io');
 const http = require('http');
 const cors = require('cors');
+const nodeCron = require("node-cron");
 
 const {addUser , deleteUser , getUser , getUserInRoom } = require('./users');
 
@@ -12,6 +13,11 @@ const app = express();
 app.use(cors()); // Configure CORS here
 
 const server = http.createServer(app);
+
+nodeCron.schedule("*/10 * * * *", () => {
+  console.log("lol");
+});
+
 const io = socketio(server, {
     cors: {
       origin: '*',
